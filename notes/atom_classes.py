@@ -156,4 +156,91 @@ def get_class(symbol):
             pitch=symbol.arguments[1].number
         )
 
+
+def get_atom_map(symbols):
+    atom_map = {}
+    for symbol in symbols:
+        atom_string = get_atom(symbol)
+        if atom_string is not None:
+            if symbol.name not in atom_map:
+                atom_map[symbol.name] = []
+            atom_map[symbol.name].append(atom_string)
+    return atom_map
+
+
+def get_atom(symbol):
+    if (
+        symbol.name == 'bars' and
+        len(symbol.arguments) == 1 and
+        symbol.arguments[0].type == clingo.SymbolType.Number
+    ):
+        return f'bars({symbol.arguments[0].number}).'
+
+    if (
+        symbol.name == 'ticks_per_beat' and
+        len(symbol.arguments) == 1 and
+        symbol.arguments[0].type == clingo.SymbolType.Number
+    ):
+        return f'ticks_per_beat({symbol.arguments[0].number}).'
+
+    if (
+        symbol.name == 'min_pitch' and
+        len(symbol.arguments) == 1 and
+        symbol.arguments[0].type == clingo.SymbolType.Number
+    ):
+        return f'min_pitch({symbol.arguments[0].number}).'
+
+    if (
+        symbol.name == 'key_root_pitch' and
+        len(symbol.arguments) == 1 and
+        symbol.arguments[0].type == clingo.SymbolType.Number
+    ):
+        return f'key_root_pitch({symbol.arguments[0].number}).'
+
+    if (
+        symbol.name == 'max_pitch' and
+        len(symbol.arguments) == 1 and
+        symbol.arguments[0].type == clingo.SymbolType.Number
+    ):
+        return f'max_pitch({symbol.arguments[0].number}).'
+
+    if (
+        symbol.name == 'note_number' and
+        len(symbol.arguments) == 1 and
+        symbol.arguments[0].type == clingo.SymbolType.Number
+    ):
+        return f'note_number({symbol.arguments[0].number}).'
+
+    if (
+        symbol.name == 'note_ticks_start' and
+        len(symbol.arguments) == 2 and
+        symbol.arguments[0].type == clingo.SymbolType.Number and
+        symbol.arguments[1].type == clingo.SymbolType.Number
+    ):
+        return f'note_ticks_start({symbol.arguments[0].number},{symbol.arguments[1].number}).'
+
+    if (
+        symbol.name == 'note_ticks_duration' and
+        len(symbol.arguments) == 2 and
+        symbol.arguments[0].type == clingo.SymbolType.Number and
+        symbol.arguments[1].type == clingo.SymbolType.Number
+    ):
+        return f'note_ticks_duration({symbol.arguments[0].number},{symbol.arguments[1].number}).'
+
+    if (
+        symbol.name == 'note_stress' and
+        len(symbol.arguments) == 2 and
+        symbol.arguments[0].type == clingo.SymbolType.Number and
+        symbol.arguments[1].type == clingo.SymbolType.String
+    ):
+        return f'note_stress({symbol.arguments[0].number},"{symbol.arguments[1].string}").'
+
+    if (
+        symbol.name == 'note_pitch' and
+        len(symbol.arguments) == 2 and
+        symbol.arguments[0].type == clingo.SymbolType.Number and
+        symbol.arguments[1].type == clingo.SymbolType.Number
+    ):
+        return f'note_pitch({symbol.arguments[0].number},{symbol.arguments[1].number}).'
+
     return None

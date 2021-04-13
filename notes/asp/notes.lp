@@ -1,4 +1,4 @@
-#include "rhythm.lp".
+#include "notes/asp/rhythm.lp".
 
 % note(Bar,Beat,Start_Numerator,Start_Denominator,End_Numerator,End_Demonmiator,Pitch)
 % Repesents a rhythm event taking place at an available grid point in the music
@@ -28,6 +28,7 @@ pitch(60;62;64;65;67).  % 0;60, where 0 is for rest
     note_pitch(Second_GridNumber,Pitch).
 
 
+#show note_number/1.
 #show note_ticks_start/2.
 #show note_ticks_duration/2.
 #show note_stress/2.

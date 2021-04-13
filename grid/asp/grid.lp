@@ -1,4 +1,4 @@
-#include "meter.lp".
+#include "grid/asp/meter.lp".
 
 % grid(Bar,Beat,Numerator,Denominator)
 % Repesents a possible point in the music timeline to have a rhythm event
@@ -69,6 +69,7 @@ grid_order(Bar,Beat,Numerator,Denominator,GridNumber) :-
     sorted_ticks(Grid_Ticks,GridNumber).
 
 
+#show ticks_per_beat/1.
 #show grid/4.
 #show grid_order/5.
 #show grid_ticks/5.
