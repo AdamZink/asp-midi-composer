@@ -11,16 +11,6 @@ parser.add_argument('--config-path', help='Path to config file with desired MIDI
 args = parser.parse_args()
 assert args.config_path and len(args.config_path) > 0
 
-
-# TODO formula to convert MIDI pitch number to frequency
-pitch_frequency_map = {
-    '60': 261.626,
-    '62': 293.665,
-    '64': 329.628,
-    '65': 349.228,
-    '67': 391.995
-}
-
 stress_velocity_map = {
     'stressed': 88,
     'slightly stressed': 78,
