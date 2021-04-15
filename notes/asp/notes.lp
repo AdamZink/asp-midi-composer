@@ -5,7 +5,7 @@
 
 % TODO have note and rest atoms, or use note with pitch = 0 as a rest?
 
-pitch(60;62;64;65;67).  % 0;60, where 0 is for rest
+pitch(60;62;64;65;67;69;71;72).
 
 4 { note_number(GridNumber);
     note_ticks_start(GridNumber,Start_Grid_Ticks);
@@ -26,6 +26,15 @@ pitch(60;62;64;65;67).  % 0;60, where 0 is for rest
     First_GridNumber + 1 == Second_GridNumber,
     note_pitch(First_GridNumber,Pitch),
     note_pitch(Second_GridNumber,Pitch).
+
+% No intervals larger than perfect fifth
+:- no_large_intervals,
+    note_number(First_GridNumber),
+    note_number(Second_GridNumber),
+    First_GridNumber + 1 == Second_GridNumber,
+    note_pitch(First_GridNumber,First_Pitch),
+    note_pitch(Second_GridNumber,Second_Pitch),
+    |First_Pitch - Second_Pitch| > 7.
 
 
 #show note_number/1.
