@@ -1,6 +1,16 @@
 import clingo
 import json
 import re
+import argparse
+
+
+parser = argparse.ArgumentParser(description='Generate named tuple classes')
+parser.add_argument('--defs-path', help='Input path of defs.lp file')
+parser.add_argument('--output-path', help='Output path for the named tuple classes')
+
+args = parser.parse_args()
+assert args.defs_path and len(args.defs_path) > 0
+assert args.output_path and len(args.output_path) > 0
 
 
 # Property values
@@ -27,9 +37,10 @@ clingo_type_map = {
 
 class DefsParser:
 
-    def __init__(self):
+    def __init__(self, defs_path: str, output_path: str):
         self.definition_map = {}
-        self.defs_filename = 'defs.lp'
+        self.defs_path = defs_path
+        self.output_path = output_path
 
     def parse_def_predicate(self, symbol):
         assert symbol.arguments[0].type == clingo.SymbolType.String
@@ -81,8 +92,8 @@ class DefsParser:
         ctl = clingo.Control()
         ctl.configuration.solve.models = 1
 
-        print(f'Generating classes from {self.defs_filename}...')
-        with open(self.defs_filename, 'r') as f:
+        print(f'Generating classes from {self.defs_path}...')
+        with open(self.defs_path, 'r') as f:
             ctl.add('base', [], f.read())
 
         ctl.ground([('base', [])])
@@ -102,11 +113,13 @@ class DefsParser:
         #print(json.dumps(self.definition_map, indent=2))
 
         class_lines = []
-        parser_lines = []
+        class_parser_lines = []
+        atom_parser_lines = []
 
         for predicate_name, predicate_properties in self.definition_map.items():
             parser_if_lines = []
-            parser_then_lines = []
+            class_parser_then_lines = []
+            atom_parser_then_line_parts = []
 
             capitalized_tokens = [token.capitalize() for token in predicate_name.split('_')]
             class_name = ''.join(capitalized_tokens + ['Atom'])
@@ -118,7 +131,8 @@ class DefsParser:
             parser_if_lines.append(f"    symbol.name == '{predicate_name}' and\n")
             parser_if_lines.append(f"    len(symbol.arguments) == {arity} and\n")
 
-            parser_then_lines.append(f"    return {class_name}(\n")
+            class_parser_then_lines.append(f"    return {class_name}(\n")
+            atom_parser_then_line_parts.append(f"    return f'{predicate_name}(")
 
             assert len(predicate_properties['terms']) > 0
             term_tuples = [(term_number_as_string, term_properties) for term_number_as_string, term_properties in predicate_properties['terms'].items()]
@@ -135,17 +149,23 @@ class DefsParser:
                 parser_if_lines.append(f"    symbol.arguments[{arg_number}].type == clingo.SymbolType.{variable_type}{space_and}\n")
 
                 comma = ',' if arg_number + 1 < arity else ''
-                parser_then_lines.append(f"        {variable_name}=symbol.arguments[{arg_number}].{clingo_type_map[variable_type]}{comma}\n")
+                class_parser_then_lines.append(f"        {variable_name}=symbol.arguments[{arg_number}].{clingo_type_map[variable_type]}{comma}\n")
+                double_quote = '"' if variable_type == "String" else ''
+                atom_parser_then_line_parts.append(f"{double_quote}{{symbol.arguments{[arg_number]}.{clingo_type_map[variable_type]}}}{double_quote}{comma}")
 
                 arg_number += 1
 
             parser_if_lines.append('):\n')
-            parser_then_lines.append(f'    )\n\n')
+            class_parser_then_lines.append(f'    )\n\n')
+            atom_parser_then_line_parts.append(f").'\n\n")
 
-            parser_lines.extend(parser_if_lines)
-            parser_lines.extend(parser_then_lines)
+            class_parser_lines.extend(parser_if_lines)
+            class_parser_lines.extend(class_parser_then_lines)
+            atom_parser_lines.extend(parser_if_lines)
+            atom_parser_lines.extend([''.join(atom_parser_then_line_parts)])
 
-        with open('atom_classes.py', 'w') as f:
+        print(f'Writing output classes to {self.output_path}...')
+        with open(self.output_path, 'w') as f:
             f.write('from typing import NamedTuple\n')
             f.write('import clingo\n')
 
@@ -165,12 +185,31 @@ def get_class_map(symbols):
 
             f.write('\n\ndef get_class(symbol):\n')
 
-            for line in parser_lines:
+            for line in class_parser_lines:
+                f.write(f'    {line}')
+
+            f.write('''
+def get_atom_map(symbols):
+    atom_map = {}
+    for symbol in symbols:
+        atom_string = get_atom(symbol)
+        if atom_string is not None:
+            if symbol.name not in atom_map:
+                atom_map[symbol.name] = []
+            atom_map[symbol.name].append(atom_string)
+    return atom_map\n''')
+
+            f.write('\n\ndef get_atom(symbol):\n')
+
+            for line in atom_parser_lines:
                 f.write(f'    {line}')
 
             f.write('    return None\n')
 
 
 if __name__ == '__main__':
-    defsParser = DefsParser()
+    defsParser = DefsParser(
+        defs_path=args.defs_path,
+        output_path=args.output_path
+    )
     defsParser.generate_named_tuple_classes()
