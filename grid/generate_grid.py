@@ -5,20 +5,22 @@ from .atom_classes import *
 def get_grid(config_json):
     prg = clingo.Control()
     prg.configuration.solve.models = 1
+
+    constraint_lines = '\n'.join([f'{c}.' for c in config_json['grid']['constraints']])
+
     # TODO figure out if relative imports work for python imports, clingo includes, and python open statements (like below)
     with open('grid/asp/grid.lp', 'r') as f:
         prg.add('base', [], f.read())
         prg.add('base', [], f'''
-    bars({config_json['bars']}).
+    bars({config_json['grid']['bars']}).
     
     bar_ticks(1,0).
     
     ticks_per_beat(60).
     
-    meter_change(1,{config_json['beatsPerBar']}).
+    meter_change(1,{config_json['grid']['beatsPerBar']}).
     
-    use_numbered_beats.
-    use_and_beats.
+    {constraint_lines}
     ''')
     # TODO ^^^ add more of these facts to config_json (i.e., config_4_bars.json)
 

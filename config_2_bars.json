@@ -1,4 +1,10 @@
 {
-  "bars": 2,
-  "beatsPerBar": 4
+  "grid": {
+    "bars": 2,
+    "beatsPerBar": 4,
+    "constraints": [
+      "use_numbered_beats",
+      "use_and_beats"
+    ]
+  }
 }
