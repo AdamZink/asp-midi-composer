@@ -46,6 +46,16 @@ BeatsPerBar { grid(Bar,Beat,Numerator,Denominator) : Beat=1..BeatsPerBar } Beats
     Denominator != "*",
     meter(Bar,BeatsPerBar).
 
+BeatsPerBar { grid(Bar,Beat,Numerator,Denominator) : Beat=1..BeatsPerBar } BeatsPerBar :-
+    use_grid(WildcardBar,WildcardBeat,Numerator,Denominator),
+    WildcardBar == "*",
+    WildcardBeat == "*",
+    Numerator != "*",
+    Denominator != "*",
+    bars(Bars),
+    Bar=1..Bars,
+    meter(Bar,BeatsPerBar).
+
 % grid_ticks(Beat,Bar,Numerator,Denominator,Ticks)
 % Calculated ticks for grid event
 grid_ticks(Bar,Beat,Numerator,Denominator,Grid_Ticks) :-
