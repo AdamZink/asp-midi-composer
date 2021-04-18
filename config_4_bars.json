@@ -5,5 +5,11 @@
     "constraints": [
       "use_numbered_beats"
     ]
+  },
+  "notes": {
+    "constraints": [
+      "no_consecutive_pitches",
+      "no_large_intervals"
+    ]
   }
 }

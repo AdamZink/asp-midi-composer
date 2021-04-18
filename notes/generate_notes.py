@@ -10,15 +10,16 @@ def get_notes(config_json, grid_facts_list):
     prg.configuration.solver.seed = int(random.random() * 4294967295)
     print(f'Rand_freq: {prg.configuration.solver.rand_freq}')
     print(f'Seed: {prg.configuration.solver.seed}')
+
+    constraint_lines = '\n'.join([f'{c}.' for c in config_json['notes']['constraints']])
+
     # TODO figure out if relative imports work for python imports, clingo includes, and python open statements (like below)
     with open('notes/asp/notes.lp', 'r') as f:
         prg.add('base', [], f.read())
         prg.add('base', [], '\n'.join(grid_facts_list))
         prg.add('base', [], f'''
-    no_consecutive_pitches.
-    no_large_intervals.
+    {constraint_lines}
     ''')
-    # TODO ^^^ add more of these facts to config_json (i.e., config_4_bars.json)
 
     prg.ground([('base', [])])
 
