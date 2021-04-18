@@ -6,7 +6,8 @@ def get_grid(config_json):
     prg = clingo.Control()
     prg.configuration.solve.models = 1
 
-    constraint_lines = '\n'.join([f'{c}.' for c in config_json['grid']['constraints']])
+    preprocessed_constraint_lines = [c.replace('*','"*"') for c in config_json['grid']['constraints']]
+    constraint_lines = '\n'.join([f'{c}.' for c in preprocessed_constraint_lines])
 
     # TODO figure out if relative imports work for python imports, clingo includes, and python open statements (like below)
     with open('grid/asp/grid.lp', 'r') as f:

@@ -30,6 +30,14 @@ grid(Bar,Beat,Numerator,Denominator) :-
     Numerator != "*",
     Denominator != "*".
 
+Bars { grid(Bar,Beat,Numerator,Denominator) : Bar=1..Bars } Bars :-
+    use_grid(WildcardBar,Beat,Numerator,Denominator),
+    WildcardBar == "*",
+    Beat != "*",
+    Numerator != "*",
+    Denominator != "*",
+    bars(Bars).
+
 % grid_ticks(Beat,Bar,Numerator,Denominator,Ticks)
 % Calculated ticks for grid event
 grid_ticks(Bar,Beat,Numerator,Denominator,Grid_Ticks) :-
