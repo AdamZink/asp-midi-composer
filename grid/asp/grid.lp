@@ -23,6 +23,12 @@ grid(Bar,Beat,1,denominator) :-
     meter(Bar,BeatsPerBar),
     Beat=1..BeatsPerBar.
 
+grid(Bar,Beat,Numerator,Denominator) :-
+    use_grid(Bar,Beat,Numerator,Denominator),
+    Bar != "*",
+    Beat != "*",
+    Numerator != "*",
+    Denominator != "*".
 
 % grid_ticks(Beat,Bar,Numerator,Denominator,Ticks)
 % Calculated ticks for grid event
