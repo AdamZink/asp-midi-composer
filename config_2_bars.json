@@ -4,7 +4,9 @@
     "beatsPerBar": 4,
     "constraints": [
       "use_numbered_beats",
-      "use_and_beats"
+      "use_and_beats",
+      "use_grid(1,*,3,4)",
+      "use_grid(2,*,3,4)"
     ]
   },
   "notes": {
