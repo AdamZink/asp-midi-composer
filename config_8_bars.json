@@ -1,4 +1,16 @@
 {
-  "bars": 8,
-  "beatsPerBar": 2
+  "grid": {
+    "bars": 8,
+    "beatsPerBar": 2,
+    "constraints": [
+      "use_numbered_beats",
+      "use_and_beats",
+      "use_grid(*,*,1,4)"
+    ]
+  },
+  "notes": {
+    "constraints": [
+      "no_consecutive_pitches"
+    ]
+  }
 }
