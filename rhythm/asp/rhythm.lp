@@ -1,12 +1,7 @@
 % rhythm(Bar,Beat,Start_Numerator,Start_Denominator,End_Numerator,End_Demonmiator,RhythmNumber)
 % Repesents a rhythm event taking place at an available grid point in the music
 
-max_grid_per_rhythm(2).
-
-% TODO design rule(s) to use up 2 or more grid events when making a rhythm event
-% Maybe assign rhythm_number first, then do the rest?
-
-% TODO runtime noticeably increased - split into 3 steps? (grid, rhythm, and pitches?)
+%max_grid_per_rhythm(2).
 
 grid_number(GridNumber) :- grid_order(_,_,_,_,GridNumber).
 
@@ -40,6 +35,7 @@ grid_rhythm_lookup(G,R) :-
 
 rhythm_number(RhythmNumber) :- grid_rhythm_lookup(_,RhythmNumber).
 
+#show rhythm_number/1.
 
 2 {
     rhythm_ticks_start(RhythmNumber,Start_Grid_Ticks);
@@ -72,8 +68,8 @@ rhythm_number(RhythmNumber) :- grid_rhythm_lookup(_,RhythmNumber).
     end_ticks(End_Ticks),
     Ticks_Duration = End_Ticks - Start_Grid_Ticks.
 
-%#show rhythm_ticks_start/2.
-%#show rhythm_ticks_duration/2.
+#show rhythm_ticks_start/2.
+#show rhythm_ticks_duration/2.
 
 2 {
     rhythm_order(Bar,Beat,Numerator,Denominator,RhythmNumber);
@@ -104,4 +100,4 @@ rhythm_stress(RhythmNumber,"unstressed") :-
     rhythm_order(Bar,Beat,Numerator,_,RhythmNumber),
     Numerator > 0.
 
-%#show rhythm_stress/2.
+#show rhythm_stress/2.

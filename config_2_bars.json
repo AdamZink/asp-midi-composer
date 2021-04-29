@@ -1,12 +1,15 @@
 {
   "grid": {
     "bars": 2,
-    "beatsPerBar": 2,
+    "beatsPerBar": 4,
     "constraints": [
       "use_numbered_beats",
       "use_and_beats",
       "use_grid(*,*,3,4)"
     ]
+  },
+  "rhythm": {
+    "max_grid_per_rhythm": 3
   },
   "notes": {
     "constraints": [

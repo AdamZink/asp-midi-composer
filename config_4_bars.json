@@ -7,6 +7,9 @@
       "use_grid(*,2,1,2)"
     ]
   },
+  "rhythm": {
+    "max_grid_per_rhythm": 2
+  },
   "notes": {
     "constraints": [
       "no_consecutive_pitches",

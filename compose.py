@@ -1,6 +1,7 @@
 import json
 from midiutil import MIDIFile
 from grid.generate_grid import get_grid
+from rhythm.generate_rhythm import get_rhythm
 from notes.generate_notes import get_notes
 import argparse
 
@@ -27,25 +28,32 @@ config_json = get_config_json(args.config_path)
 
 print(f'Config properties:\n{json.dumps(config_json, indent=2)}')
 
-grid_atom_map = get_grid(config_json)
+grid_atom_map, grid_class_map = get_grid(config_json)
 print(grid_atom_map)
 
-fact_list_for_notes = []
+fact_list_for_rhythm = []
 for _, atom_list in grid_atom_map.items():
+    fact_list_for_rhythm.extend(atom_list)
+
+rhythm_atom_map = get_rhythm(config_json, fact_list_for_rhythm)
+print(rhythm_atom_map)
+
+fact_list_for_notes = []
+for _, atom_list in rhythm_atom_map.items():
     fact_list_for_notes.extend(atom_list)
 
 notes_class_map = get_notes(config_json, fact_list_for_notes)
 print(notes_class_map)
 
 
-assert 'ticks_per_beat' in notes_class_map and len(notes_class_map['ticks_per_beat']) == 1
+assert 'ticks_per_beat' in grid_class_map and len(grid_class_map['ticks_per_beat']) == 1
 assert 'note_number' in notes_class_map and len(notes_class_map['note_number']) > 0
 assert 'note_ticks_start' in notes_class_map and len(notes_class_map['note_ticks_start']) == len(notes_class_map['note_number'])
 assert 'note_ticks_duration' in notes_class_map and len(notes_class_map['note_ticks_duration']) == len(notes_class_map['note_number'])
 assert 'note_stress' in notes_class_map and len(notes_class_map['note_stress']) == len(notes_class_map['note_number'])
 assert 'note_pitch' in notes_class_map and len(notes_class_map['note_pitch']) == len(notes_class_map['note_number'])
 
-ticks_per_beat: int = notes_class_map['ticks_per_beat'][0].ticks_per_beat
+ticks_per_beat: int = grid_class_map['ticks_per_beat'][0].ticks_per_beat
 note_number_list = [x.grid_number for x in notes_class_map['note_number']]
 note_ticks_start_map = {x.grid_number: x.start__grid__ticks for x in notes_class_map['note_ticks_start']}
 note_ticks_duration_map = {x.grid_number: x.ticks__duration for x in notes_class_map['note_ticks_duration']}

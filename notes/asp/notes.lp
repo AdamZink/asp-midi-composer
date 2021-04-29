@@ -1,5 +1,3 @@
-#include "notes/asp/rhythm.lp".
-
 % note(Bar,Beat,Start_Numerator,Start_Denominator,End_Numerator,End_Demonmiator,Pitch)
 % Repesents a rhythm event taking place at an available grid point in the music
 
