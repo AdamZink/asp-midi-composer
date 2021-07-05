@@ -1,4 +1,5 @@
 {
+  "beatsPerMinute": 100,
   "grid": {
     "bars": 2,
     "beatsPerBar": 4,
