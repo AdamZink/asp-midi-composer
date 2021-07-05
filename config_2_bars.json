@@ -12,6 +12,7 @@
     "max_grid_per_rhythm": 3
   },
   "notes": {
+    "pitches": [60, 62, 64, 65, 67, 69, 71, 72],
     "constraints": [
       "no_large_intervals"
     ]
