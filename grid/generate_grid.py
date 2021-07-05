@@ -28,8 +28,11 @@ def get_grid(config_json):
     prg.ground([('base', [])])
 
     atom_map = None
+    class_map = None
     with prg.solve(yield_=True) as handle:
         for model in handle:
             atom_map = get_atom_map(model.symbols(atoms=True))
+            # TODO instead of sending both, could add conversion methods between atom <-> class formats
+            class_map = get_class_map(model.symbols(atoms=True))
 
-    return atom_map
+    return atom_map, class_map

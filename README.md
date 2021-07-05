@@ -21,6 +21,9 @@ Prepare a JSON config file such as `config_4_bars.json`:
       "use_grid(*,2,1,2)"
     ]
   },
+  "rhythm": {
+    "max_grid_per_rhythm": 2
+  },
   "notes": {
     "constraints": [
       "no_consecutive_pitches",

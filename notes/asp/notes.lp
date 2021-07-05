@@ -1,5 +1,3 @@
-#include "notes/asp/rhythm.lp".
-
 % note(Bar,Beat,Start_Numerator,Start_Denominator,End_Numerator,End_Demonmiator,Pitch)
 % Repesents a rhythm event taking place at an available grid point in the music
 
@@ -7,33 +5,34 @@
 
 pitch(60;62;64;65;67;69;71;72).
 
-4 { note_number(GridNumber);
-    note_ticks_start(GridNumber,Start_Grid_Ticks);
-    note_ticks_duration(GridNumber,Ticks_Duration);
-    note_stress(GridNumber,Stress)
+4 { note_number(RhythmNumber);
+    note_ticks_start(RhythmNumber,Start_Grid_Ticks);
+    note_ticks_duration(RhythmNumber,Ticks_Duration);
+    note_stress(RhythmNumber,Stress)
 } 4 :-
-    rhythm_number(GridNumber),
-    rhythm_ticks_start(GridNumber,Start_Grid_Ticks),
-    rhythm_ticks_duration(GridNumber,Ticks_Duration),
-    rhythm_stress(GridNumber,Stress).
+    rhythm_number(RhythmNumber),
+    rhythm_ticks_start(RhythmNumber,Start_Grid_Ticks),
+    rhythm_ticks_duration(RhythmNumber,Ticks_Duration),
+    rhythm_stress(RhythmNumber,Stress).
 
-1 { note_pitch(GridNumber,Pitch) : pitch(Pitch) } 1 :- rhythm_number(GridNumber).
+1 { note_pitch(RhythmNumber,Pitch) : pitch(Pitch) } 1 :-
+    rhythm_number(RhythmNumber).
 
 % No consecutive pitches
 :- no_consecutive_pitches,
-    note_number(First_GridNumber),
-    note_number(Second_GridNumber),
-    First_GridNumber + 1 == Second_GridNumber,
-    note_pitch(First_GridNumber,Pitch),
-    note_pitch(Second_GridNumber,Pitch).
+    note_number(First_RhythmNumber),
+    note_number(Second_RhythmNumber),
+    First_RhythmNumber + 1 == Second_RhythmNumber,
+    note_pitch(First_RhythmNumber,Pitch),
+    note_pitch(Second_RhythmNumber,Pitch).
 
 % No intervals larger than perfect fifth
 :- no_large_intervals,
-    note_number(First_GridNumber),
-    note_number(Second_GridNumber),
-    First_GridNumber + 1 == Second_GridNumber,
-    note_pitch(First_GridNumber,First_Pitch),
-    note_pitch(Second_GridNumber,Second_Pitch),
+    note_number(First_RhythmNumber),
+    note_number(Second_RhythmNumber),
+    First_RhythmNumber + 1 == Second_RhythmNumber,
+    note_pitch(First_RhythmNumber,First_Pitch),
+    note_pitch(Second_RhythmNumber,Second_Pitch),
     |First_Pitch - Second_Pitch| > 7.
 
 
