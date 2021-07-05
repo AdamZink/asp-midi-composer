@@ -13,6 +13,7 @@ Requires python3 with `midiutil` and `clingo` modules installed.
 Prepare a JSON config file such as `config_4_bars.json`:
 ```json
 {
+  "beatsPerMinute": 80,
   "grid": {
     "bars": 4,
     "beatsPerBar": 4,

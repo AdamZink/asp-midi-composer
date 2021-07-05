@@ -25,8 +25,9 @@ def get_config_json(config_path):
 
 
 config_json = get_config_json(args.config_path)
-
 print(f'Config properties:\n{json.dumps(config_json, indent=2)}')
+
+tempo = config_json['beatsPerMinute']
 
 grid_atom_map, grid_class_map = get_grid(config_json)
 print(grid_atom_map)
@@ -61,8 +62,6 @@ note_stress_map = {x.grid_number: x.stress for x in notes_class_map['note_stress
 note_pitch_map = {x.grid_number: x.pitch for x in notes_class_map['note_pitch']}
 
 # Write MIDI file
-tempo = 80  # In BPM
-
 MyMIDI = MIDIFile(
     numTracks=1,
     ticks_per_quarternote=ticks_per_beat,
