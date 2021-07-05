@@ -25,6 +25,7 @@ Prepare a JSON config file such as `config_4_bars.json`:
     "max_grid_per_rhythm": 2
   },
   "notes": {
+    "pitches": [60, 62, 64, 65, 67, 69, 71, 72],
     "constraints": [
       "no_consecutive_pitches",
       "no_large_intervals"
@@ -38,8 +39,9 @@ Prepare a JSON config file such as `config_4_bars.json`:
 ```commandline
 make atom_classes
 ```
-* Generates two files:
+* Generates three files:
   * `grid/atom_classes.py` (to parse ASP results from `generate_grid.py`)
+  * `rhythm/atom_classes.py` (to parse ASP results from `generate_rhythm.py`)
   * `notes/atom_classes.py` (to parse ASP results from `generate_notes.py`)
 
 ## Generate MIDI file

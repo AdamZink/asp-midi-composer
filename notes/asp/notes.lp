@@ -3,7 +3,7 @@
 
 % TODO have note and rest atoms, or use note with pitch = 0 as a rest?
 
-pitch(60;62;64;65;67;69;71;72).
+%pitch(60;62;64;65;67;69;71;72).
 
 4 { note_number(RhythmNumber);
     note_ticks_start(RhythmNumber,Start_Grid_Ticks);

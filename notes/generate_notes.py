@@ -11,6 +11,7 @@ def get_notes(config_json, grid_facts_list):
     print(f'Rand_freq: {prg.configuration.solver.rand_freq}')
     print(f'Seed: {prg.configuration.solver.seed}')
 
+    pitch_lines = '\n'.join([f'pitch({p}).' for p in config_json['notes']['pitches']])
     constraint_lines = '\n'.join([f'{c}.' for c in config_json['notes']['constraints']])
 
     # TODO figure out if relative imports work for python imports, clingo includes, and python open statements (like below)
@@ -18,6 +19,7 @@ def get_notes(config_json, grid_facts_list):
         prg.add('base', [], f.read())
         prg.add('base', [], '\n'.join(grid_facts_list))
         prg.add('base', [], f'''
+    {pitch_lines}
     {constraint_lines}
     ''')
 

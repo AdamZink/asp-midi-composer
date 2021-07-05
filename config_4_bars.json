@@ -11,6 +11,7 @@
     "max_grid_per_rhythm": 2
   },
   "notes": {
+    "pitches": [60, 67, 71, 72],
     "constraints": [
       "no_consecutive_pitches",
       "no_large_intervals"
