@@ -23,38 +23,37 @@ grid(Bar,Beat,1,denominator) :-
     meter(Bar,BeatsPerBar),
     Beat=1..BeatsPerBar.
 
+% Expand wildcards
+use_grid(Bar,MaybeWildcardBeat,MaybeWildcardNumerator,Denominator) :-
+    use_grid(WildcardBar,MaybeWildcardBeat,MaybeWildcardNumerator,Denominator),
+    WildcardBar == "*",
+    Denominator != "*",
+    bars(Bars),
+    Bar=1..Bars.
+
+use_grid(Bar,Beat,MaybeWildcardNumerator,Denominator) :-
+    use_grid(Bar,WildcardBeat,MaybeWildcardNumerator,Denominator),
+    Bar != "*",
+    WildcardBeat == "*",
+    Denominator != "*",
+    meter(Bar,BeatsPerBar),
+    Beat=1..BeatsPerBar.
+
+use_grid(Bar,Beat,Numerator,Denominator) :-
+    use_grid(Bar,Beat,WildcardNumerator,Denominator),
+    Bar != "*",
+    Beat != "*",
+    WildcardNumerator == "*",
+    Denominator != "*",
+    Numerator=0..Denominator-1.
+
+% Define the grid after fully expanding wildcards
 grid(Bar,Beat,Numerator,Denominator) :-
     use_grid(Bar,Beat,Numerator,Denominator),
     Bar != "*",
     Beat != "*",
     Numerator != "*",
     Denominator != "*".
-
-Bars { grid(Bar,Beat,Numerator,Denominator) : Bar=1..Bars } Bars :-
-    use_grid(WildcardBar,Beat,Numerator,Denominator),
-    WildcardBar == "*",
-    Beat != "*",
-    Numerator != "*",
-    Denominator != "*",
-    bars(Bars).
-
-BeatsPerBar { grid(Bar,Beat,Numerator,Denominator) : Beat=1..BeatsPerBar } BeatsPerBar :-
-    use_grid(Bar,WildcardBeat,Numerator,Denominator),
-    Bar != "*",
-    WildcardBeat == "*",
-    Numerator != "*",
-    Denominator != "*",
-    meter(Bar,BeatsPerBar).
-
-BeatsPerBar { grid(Bar,Beat,Numerator,Denominator) : Beat=1..BeatsPerBar } BeatsPerBar :-
-    use_grid(WildcardBar,WildcardBeat,Numerator,Denominator),
-    WildcardBar == "*",
-    WildcardBeat == "*",
-    Numerator != "*",
-    Denominator != "*",
-    bars(Bars),
-    Bar=1..Bars,
-    meter(Bar,BeatsPerBar).
 
 % grid_ticks(Beat,Bar,Numerator,Denominator,Ticks)
 % Calculated ticks for grid event
